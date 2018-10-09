@@ -2,12 +2,9 @@
 const Driver=require("../../models/driver");
 const bcrypt = require('bcryptjs');
 
-function registerDriver(dFirstName,dLastName,dEmail,dNic,dMobile,dPassword)
+function registerDriver(dNic,dFirstName,dLastName,dMobile,dEmail,dLicense)
 {
     var promise = new Promise((resolve,reject)=>{
-
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(dPassword, salt);
         
         const newDriver= new Driver ({
 
@@ -16,7 +13,7 @@ function registerDriver(dFirstName,dLastName,dEmail,dNic,dMobile,dPassword)
             lastName:dLastName,
             mobile:dMobile,
             email:dEmail,
-            password:hash,
+            license:dLicense
         });
 
         newDriver.save((error,doc)=>{

@@ -2,7 +2,7 @@ const Driver=require('../../models/driver');
 
 
 
-function enterDriverDetails(dLicense,dName,dMobile,dEmail)
+/* function enterDriverDetails(dLicense,dName,dMobile,dEmail)
 {
     var promise = new Promise(function(resolve,reject){
 
@@ -22,13 +22,12 @@ function enterDriverDetails(dLicense,dName,dMobile,dEmail)
 
     return promise;
      
-}
+} */
 
-function editDriverDetails(oldDLicense,newDLicense,newDName,newDMobile,newDEmail)
+function editDriverDetails(nic,newDFirstName,newDLastName,newDMobile,newDEmail)
 {
     var promise = new Promise(function(resolve,reject){
-
-        Driver.findOneAndUpdate({license:oldDLicense},{license:newDLicense,name:newDName,mobile:newDMobile,email:newDEmail},{new:true},function(error,doc){
+        Driver.findOneAndUpdate({nic:nic},{firstName:newDFirstName,lastName:newDLastName,mobile:newDMobile,email:newDEmail},{new:true},function(error,doc){
             if(error) 
             {
                 reject(error);
@@ -45,11 +44,11 @@ function editDriverDetails(oldDLicense,newDLicense,newDName,newDMobile,newDEmail
    
 }
 
-function viewDriverDetails(dLicense)
+function viewDriverDetails(dNic)
 {
     var promise=new Promise(function(resolve,reject){
 
-        Driver.find({license:dLicense},function(error,doc){
+        Driver.find({nic:dNic},function(error,doc){
             if(error)
             {
                 reject(error);
@@ -64,10 +63,10 @@ function viewDriverDetails(dLicense)
     return promise;
 }
 
-function deleteDriverDetails(dLicense)
+function deleteDriverDetails(dNic)
 {
     var promise = new Promise(function(resolve,reject){
-        Driver.deleteOne({license:dLicense},function(error,doc){
+        Driver.deleteOne({nic:dNic},function(error,doc){
             if(error)
             {
                 reject(error);
@@ -89,4 +88,4 @@ function deleteDriverDetails(dLicense)
 module.exports.deleteDriverDetails=deleteDriverDetails;
 module.exports.viewDriverDetails=viewDriverDetails;
 module.exports.editDriverDetails=editDriverDetails;
-module.exports.enterDriverDetails=enterDriverDetails;
+//module.exports.enterDriverDetails=enterDriverDetails;
