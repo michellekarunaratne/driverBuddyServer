@@ -5,9 +5,15 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 const driver=require('./functions/driver/crudDriver');
+const insurance=require('./functions/insurance/crudInsurance');
+const police=require('./functions/police/crudPolice');
 const fine=require('./functions/fine/crudFine');
 const driverRegistration=require('./functions/driver/driverRegistration');
-
+const policeOfficerRegistration=require("./functions/police/policeRegistration");
+const insuranceAgentRegistration=require("./functions/insurance/insuranceRegistration");
+const userRegistration=require("./functions/user/userRegistration");
+const userLogin=require("./functions/user/userLogin");
+const router 	   = express.Router();
 /* var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
  */
@@ -44,14 +50,14 @@ app.use(function(err, req, res, next) {
 }); */
 
 
-app.get('/',(req,res)=> res.send('Hello World'));
+//app.get('/',jsonencodedParser,(req,res)=> res.send('Hello World'));
 app.listen(3000,()=>console.log("Listening on port 3000"));
 
 
 
-/*  app.post('/',jsonencodedParser,(req,res)=>{
+/* app.post('/',jsonencodedParser,(req,res)=>{
 
-  driver.enterDriverDetails(req.body.license,req.body.name,req.body.mobile,req.body.email)
+  driver.enterDriverDetails(req.body.nic,req.body.firstName,req.body.lastName,req.body.mobile,req.body.email,req.body.password,req.body.license)
   .then(function(doc){
      res.send(doc);
   })
@@ -60,53 +66,142 @@ app.listen(3000,()=>console.log("Listening on port 3000"));
   })
 }); */
 
-app.post('/',jsonencodedParser,(req,res)=>{
+app.post('/driverRegister',jsonencodedParser,(req,res)=>{
 
-  driverRegistration.registerDriver(req.body.firstName,req.body.lastName,req.body.email,req.body.nic,req.body.mobile,req.body.password)
+  driverRegistration.registerDriver(req.body.nic,req.body.firstName,req.body.lastName,req.body.mobile,req.body.email,req.body.license)
   .then(function(doc){
-    res.send(doc);
+     res.send(doc);
   })
   .catch(function(error){
     res.send(error);
   })
+});
 
+app.post('/policeRegister',jsonencodedParser,(req,res)=>{
+
+  policeOfficerRegistration.registerPolice(req.body.nic,req.body.firstName,req.body.lastName,req.body.mobile,req.body.email,req.body.policeId)
+  .then(function(doc){
+     res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  })
+});
+
+app.post('/insuranceRegister',jsonencodedParser,(req,res)=>{
+
+  insuranceAgentRegistration.registerInsurance(req.body.nic,req.body.firstName,req.body.lastName,req.body.mobile,req.body.email,req.body.agentId)
+
+  .then(function(doc){
+     res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  })
 });
 
 
-/* app.post('/',jsonencodedParser,(req,res)=>{
+app.post('/driverEdit',jsonencodedParser,(req,res)=>{
 
-  driver.editDriverDetails(req.body.oldLicense,req.body.newLicense,req.body.name,req.body.mobile,req.body.email)
+  driver.editDriverDetails(req.body.nic,req.body.firstName,req.body.lastName,req.body.mobile,req.body.email)
   .then(function(doc){
      res.send(doc);
   })
   .catch(function(error){
     res.send(error);
   })
-}); */
+});
 
-/* app.post('/',jsonencodedParser,(req,res)=>{
+app.post('/driverView',jsonencodedParser,(req,res)=>{
 
-  driver.viewDriverDetails(req.body.license)
+  driver.viewDriverDetails(req.body.nic)
   .then(function(doc){
      res.send(doc);
   })
   .catch(function(error){
     res.send(error);
   })
-}); */
+});
 
+app.post('/driverDelete',jsonencodedParser,(req,res)=>{
+
+  driver.deleteDriverDetails(req.body.nic)
+  .then(function(doc){
+     res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  })
+});
+
+
+app.post('/insuranceEdit',jsonencodedParser,(req,res)=>{
+
+  insurance.editInsuranceDetails(req.body.nic,req.body.firstName,req.body.lastName,req.body.mobile,req.body.email)
+  .then(function(doc){
+     res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  })
+});
+
+app.post('/insuranceView',jsonencodedParser,(req,res)=>{
+
+  insurance.viewInsuranceDetails(req.body.nic)
+  .then(function(doc){
+     res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  })
+});
+
+app.post('/insuranceDelete',jsonencodedParser,(req,res)=>{
+
+  insurance.deleteInsuranceDetails(req.body.nic)
+  .then(function(doc){
+     res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  })
+});
+
+
+app.post('/policeEdit',jsonencodedParser,(req,res)=>{
+
+  police.editPoliceDetails(req.body.nic,req.body.firstName,req.body.lastName,req.body.mobile,req.body.email)
+  .then(function(doc){
+     res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  })
+});
+
+app.post('/policeView',jsonencodedParser,(req,res)=>{
+
+  police.viewPoliceDetails(req.body.nic)
+  .then(function(doc){
+     res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  })
+});
+
+app.post('/policeDelete',jsonencodedParser,(req,res)=>{
+
+  police.deletePoliceDetails(req.body.nic)
+  .then(function(doc){
+     res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  })
+});
 /*  app.post('/',jsonencodedParser,(req,res)=>{
-
-  driver.deleteDriverDetails(req.body.license)
-  .then(function(doc){
-     res.send(doc);
-  })
-  .catch(function(error){
-    res.send(error);
-  })
-}); */
-
- app.post('/',jsonencodedParser,(req,res)=>{
 
  fine.enterFineDetails(req.body.license,req.body.offense,req.body.amount,req.body.officerId)
   .then(function(doc){
@@ -116,8 +211,30 @@ app.post('/',jsonencodedParser,(req,res)=>{
     res.send(error);
   })
   //res.send(req.body.date);
+}); */
+
+app.post('/userRegister',jsonencodedParser,(req,res)=>{
+
+  userRegistration.registerUser(req.body.userId,req.body.type,req.body.password)
+  .then(function(doc){
+    res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  })
+
 });
 
+app.post('/userLogin',jsonencodedParser,(req,res)=>{
 
+  userLogin.loginUser(req.body.userId,req.body.password)
+  .then(function(doc){
+    res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  })
+
+});
 
 module.exports = app;
