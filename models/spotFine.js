@@ -12,15 +12,13 @@ mongoose.connection.once('open',function()
 });
 
 
-var insuranceSchema= new Schema(
+var spotFineSchema= new Schema(
     {
-        nic:String,
-        firstName:String,
-        lastName:String,
-        mobile:Number,
-        email: String,
-        agentId:String
+        fine_id:String,
+        name:String,
+        amount:String,  
+        description:String
     }
 );
 
-module.exports= mongoose.model('Insurance',insuranceSchema);
+module.exports= mongoose.model('SpotFine',spotFineSchema);

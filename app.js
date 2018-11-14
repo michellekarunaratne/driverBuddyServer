@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 const driver=require('./functions/driver/crudDriver');
 const insurance=require('./functions/insurance/crudInsurance');
 const police=require('./functions/police/crudPolice');
-const fine=require('./functions/fine/crudFine');
+const fineTicket=require('./functions/fine/crudFine');
 const driverRegistration=require('./functions/driver/driverRegistration');
 const policeOfficerRegistration=require("./functions/police/policeRegistration");
 const insuranceAgentRegistration=require("./functions/insurance/insuranceRegistration");
@@ -235,6 +235,17 @@ app.post('/userLogin',jsonencodedParser,(req,res)=>{
     res.send(error);
   })
 
+});
+
+app.post('/userAccountType',jsonencodedParser,(req,res)=>{
+
+  userLogin.loginAccountType(req.body.userId)
+  .then(function(doc){
+    res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  })
 });
 
 module.exports = app;

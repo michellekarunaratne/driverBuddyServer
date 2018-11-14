@@ -1,7 +1,7 @@
 const mongoose=require('mongoose');
 const Schema =mongoose.Schema;
 
-mongoose.connect('mongodb://localhost/driverbuddy',{ useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/driverbuddy',{ useNewUrlParser: true });
 
 mongoose.connection.once('open',function()
 {
@@ -11,16 +11,13 @@ mongoose.connection.once('open',function()
     console.log('Connection error:',error);
 });
 
+var FineTicket = require('mongoose').model('FineTicket').schema
 
-var fineSchema= new mongoose.Schema(
+var Payment=new mongoose.Schema(
     {
-        license:String,
-        offense :String,
-        amount: Number,
-        officerId: String,
+        fineTicket:[FineTicket],
         timeStamp:{ type : Date, default: Date.now }
-
     }
 );
 
-module.exports= mongoose.model('Fine',fineSchema);
+module.exports= mongoose.model('Payment',paymentSchema);
