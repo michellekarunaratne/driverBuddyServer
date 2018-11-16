@@ -5,6 +5,26 @@ const Police=require("../../models/police");
 const Insurance=require("../../models/insurance");
 
 
+
+function loginAccountType(userId)
+{
+    var promise=new Promise(function(resolve,reject){
+
+        User.find({userId:userId},function(error,doc){
+            if(error)
+            {
+                reject(error);
+            }
+            else
+            {
+                resolve(doc[0]);
+            }
+        });
+    });
+
+    return promise;
+}
+
 function loginUser(userId,password)
 {
     var promise = new Promise((resolve,reject)=>{
@@ -40,7 +60,7 @@ function loginUser(userId,password)
                         }
                         else
                         {
-                            resolve(doc);
+                        resolve(doc[0]);
                         }
                     });
                 }
@@ -55,7 +75,7 @@ function loginUser(userId,password)
                         }
                         else
                         {
-                            resolve(doc);
+                            resolve(doc[0]);
                         }
                     });
                }
@@ -69,7 +89,7 @@ function loginUser(userId,password)
                         }
                         else
                         {
-                            resolve(doc);
+                            resolve(doc[0]);
                         }
                      });
                }
@@ -85,3 +105,4 @@ function loginUser(userId,password)
 }
 
 module.exports.loginUser=loginUser;
+module.exports.loginAccountType=loginAccountType;

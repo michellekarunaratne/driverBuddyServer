@@ -11,16 +11,16 @@ mongoose.connection.once('open',function()
     console.log('Connection error:',error);
 });
 
+var Driver = require('mongoose').model('Driver').schema
+var Police = require('mongoose').model('Police').schema
 
-var insuranceSchema= new Schema(
+var Distress =new mongoose.Schema(
     {
-        nic:String,
-        firstName:String,
-        lastName:String,
-        mobile:Number,
-        email: String,
-        agentId:String
+        driver:[Driver],
+        police:[Police],
+        nature:String,
+        timeStamp:{ type : Date, default: Date.now }
     }
 );
 
-module.exports= mongoose.model('Insurance',insuranceSchema);
+module.exports= mongoose.model('Distress',distressSchema);
