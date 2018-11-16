@@ -248,4 +248,16 @@ app.post('/userAccountType',jsonencodedParser,(req,res)=>{
   })
 });
 
+app.post('/createFineTicket',jsonencodedParser,(req,res)=>{
+
+  fineTicket.enterFineDetails(req.body.nic,req.body.policeId,req.body.name,req.body.amount,req.body.vehicleNumber)
+  .then(function(doc){
+    res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  })
+});
+
+
 module.exports = app;
