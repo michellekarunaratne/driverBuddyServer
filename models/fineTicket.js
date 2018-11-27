@@ -19,7 +19,7 @@ var SpotFine=require('mongoose').model('SpotFine').schema
 var fineSchema= new Schema(
     {
         vehicleNumber: String,
-        Amount: Number, 
+        amount: Number, 
         fine:[SpotFine],
         driver:[Driver],
         police:[Police],

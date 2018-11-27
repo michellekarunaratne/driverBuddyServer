@@ -250,7 +250,7 @@ app.post('/userAccountType',jsonencodedParser,(req,res)=>{
 
 app.post('/createFineTicket',jsonencodedParser,(req,res)=>{
 
-  fineTicket.enterFineDetails(req.body.nic,req.body.policeId,req.body.name,req.body.amount,req.body.vehicleNumber)
+  fineTicket.enterFineDetails(req.body.nic,req.body.policeId,req.body.fineName,req.body.amount,req.body.vehicleNumber)
   .then(function(doc){
     res.send(doc);
   })
@@ -259,5 +259,34 @@ app.post('/createFineTicket',jsonencodedParser,(req,res)=>{
   })
 });
 
+app.get('/checkLicense',jsonencodedParser,(req,res)=>{
+  driver.findDriver(req.query.license)
+  .then(function(doc){
+    res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  })
+});
+
+app.get('/getTicketDriver',jsonencodedParser,(req,res)=>{
+  fineTicket.findFineTicketDriver(req.query.nic)
+  .then(function(doc){
+    res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  });
+});
+
+app.get('/getTicketPolice',jsonencodedParser,(req,res)=>{
+  fineTicket.findFineTicketPolice(req.query.policeId)
+  .then(function(doc){
+    res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  });
+});
 
 module.exports = app;
