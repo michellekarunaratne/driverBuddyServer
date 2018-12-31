@@ -2,6 +2,7 @@ const mongoose=require('mongoose');
 const Schema =mongoose.Schema;
 
 mongoose.connect('mongodb://localhost:27017/driverbuddy',{ useNewUrlParser: true });
+//mongoose.connect('mongodb+srv://driver-1:driver_1@driverbuddy-of8hf.mongodb.net/driverbuddy?retryWrites=true',{ useNewUrlParser: true });
 
 mongoose.connection.once('open',function()
 {
@@ -19,11 +20,12 @@ var SpotFine=require('mongoose').model('SpotFine').schema
 var fineSchema= new Schema(
     {
         vehicleNumber: String,
-        Amount: Number, 
+        amount: Number, 
         fine:[SpotFine],
         driver:[Driver],
         police:[Police],
-        timeStamp:{ type : Date, default: Date.now }
+        timeStamp:{ type : Date, default: Date.now },
+        paid:{type:Boolean,default:false}
     }
 );
 

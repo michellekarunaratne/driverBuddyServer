@@ -55,7 +55,7 @@ function viewDriverDetails(dNic)
             }
             else
             {
-                resolve(doc);
+                resolve(doc[0]);
             }
         });
     });
@@ -82,10 +82,29 @@ function deleteDriverDetails(dNic)
 
 }
 
+function findDriver(license)
+{
+    var promise=new Promise(function(resolve,reject){
+        Driver.find({license:license},function(error,doc){
+            if(error)
+            {
+                reject(error);
+            }
+            else
+            {
+                resolve(doc[0])
+            }
+        });
+    });
+
+    return promise;
+}
+
 
 
 
 module.exports.deleteDriverDetails=deleteDriverDetails;
 module.exports.viewDriverDetails=viewDriverDetails;
 module.exports.editDriverDetails=editDriverDetails;
+module.exports.findDriver=findDriver;
 //module.exports.enterDriverDetails=enterDriverDetails;

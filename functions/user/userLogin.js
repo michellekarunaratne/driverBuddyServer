@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const Driver=require("../../models/driver");
 const Police=require("../../models/police");
 const Insurance=require("../../models/insurance");
+var jwt=require('jsonwebtoken');
 
 
 
@@ -47,8 +48,14 @@ function loginUser(userId,password)
             const hashedPassword=user.hashedPassword;
             const type=user.type;
             const userId=user.userId;
+            var userToken={
+                userId:user.userId,
+                password:password
+            };
+            var token=jwt.sign(userToken,process.env.SECRET_KEY,{
+                expiresIn:4000
+            });
             
-
             if(bcrypt.compareSync(password,hashedPassword))
             {
                 if(type=="Driver")
@@ -60,7 +67,10 @@ function loginUser(userId,password)
                         }
                         else
                         {
-                        resolve(doc[0]);
+                            var obj=doc[0].toObject();
+                            var temp={token:token};
+                            Object.assign(obj,temp);
+                            resolve(obj);
                         }
                     });
                 }
@@ -75,7 +85,10 @@ function loginUser(userId,password)
                         }
                         else
                         {
-                            resolve(doc[0]);
+                            var obj=doc[0].toObject();
+                            var temp={token:token};
+                            Object.assign(obj,temp);
+                            resolve(obj);
                         }
                     });
                }
@@ -89,7 +102,10 @@ function loginUser(userId,password)
                         }
                         else
                         {
-                            resolve(doc[0]);
+                            var obj=doc[0].toObject();
+                            var temp={token:token};
+                            Object.assign(obj,temp);
+                            resolve(obj);
                         }
                      });
                }

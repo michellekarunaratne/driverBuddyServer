@@ -67,7 +67,7 @@ function enterFineDetails(dNic,policeId,fineName,amount,vehicleNumber)
         return new Promise(function(resolve,reject){
             const newfineTicket=new FineTicket({
                 vehicleNumber:vehicleNumber,
-                Amount:amount, 
+                amount:amount, 
                 fine:$Vals.fine,
                 driver:$Vals.driver,
                 police:$Vals.police,
@@ -105,6 +105,52 @@ function enterFineDetails(dNic,policeId,fineName,amount,vehicleNumber)
 
 }
 
+function getRecentTicketAndUpdate(policeId,nic,amount,vehicleNumber,fineName)
+{
+    var ObjectID = require('mongodb').ObjectID
+
+    FineTicket.findOneAndUpdate({policeId:policeId,_id:{$gt:ObjectID.createFromTime(Date.now()/1000-15*60)}}, )   
+}
+
+function findFineTicketDriver(nic)
+{
+    var promise=new Promise(function(resolve,reject){
+
+        FineTicket.find({"driver.nic":nic},function(error,doc){
+            if(error)
+            {
+                reject(error);
+            }
+            else
+            {
+                resolve(doc);
+            }
+        });
+    });
+
+    return promise;
+}
+
+function findFineTicketPolice(policeId)
+{
+    var promise = new Promise(function(resolve,reject){
+        FineTicket.find({"police.policeId":policeId},function(error,doc){
+            if(error)
+            {
+                reject(error);
+            }
+            else
+            {
+                resolve(doc);
+            }
+        });
+    });
+
+    return promise;
+}
+
 
 
 module.exports.enterFineDetails=enterFineDetails;
+module.exports.findFineTicketDriver=findFineTicketDriver;
+module.exports.findFineTicketPolice=findFineTicketPolice;

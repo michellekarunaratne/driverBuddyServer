@@ -13,12 +13,19 @@ const policeOfficerRegistration=require("./functions/police/policeRegistration")
 const insuranceAgentRegistration=require("./functions/insurance/insuranceRegistration");
 const userRegistration=require("./functions/user/userRegistration");
 const userLogin=require("./functions/user/userLogin");
+const accident=require('./functions/accidentReport/crudReport');
+var jwt=require('jsonwebtoken');
 const router 	   = express.Router();
 /* var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
  */
 var app = express();
 var jsonencodedParser = bodyParser.json({ extended: false });
+
+process.env.SECRET_KEY="mysupersecretkey";
+
+var secureRoutes = express.Router();
+app.use('/secure-api',secureRoutes);
 
 /* // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -52,6 +59,33 @@ app.use(function(err, req, res, next) {
 
 //app.get('/',jsonencodedParser,(req,res)=> res.send('Hello World'));
 app.listen(3000,()=>console.log("Listening on port 3000"));
+
+//Validation Middleware
+
+secureRoutes.use(jsonencodedParser,(req,res,next)=>{
+
+  var token=req.headers.authorization||req.body.token;
+  if(token)
+  {
+   jwt.verify(token,process.env.SECRET_KEY,(err,decode)=>{
+
+      if(err)
+      {
+          res.send(err);
+      }
+      else
+      {
+        next();
+      }
+   })
+  }
+  else
+  {
+    res.status(500).send("Invalid Token");
+  }
+})
+
+
 
 
 
@@ -101,7 +135,7 @@ app.post('/insuranceRegister',jsonencodedParser,(req,res)=>{
 });
 
 
-app.post('/driverEdit',jsonencodedParser,(req,res)=>{
+secureRoutes.post('/driverEdit',jsonencodedParser,(req,res)=>{
 
   driver.editDriverDetails(req.body.nic,req.body.firstName,req.body.lastName,req.body.mobile,req.body.email)
   .then(function(doc){
@@ -112,7 +146,7 @@ app.post('/driverEdit',jsonencodedParser,(req,res)=>{
   })
 });
 
-app.post('/driverView',jsonencodedParser,(req,res)=>{
+secureRoutes.post('/driverView',jsonencodedParser,(req,res)=>{
 
   driver.viewDriverDetails(req.body.nic)
   .then(function(doc){
@@ -123,7 +157,7 @@ app.post('/driverView',jsonencodedParser,(req,res)=>{
   })
 });
 
-app.post('/driverDelete',jsonencodedParser,(req,res)=>{
+secureRoutes.post('/driverDelete',jsonencodedParser,(req,res)=>{
 
   driver.deleteDriverDetails(req.body.nic)
   .then(function(doc){
@@ -135,7 +169,7 @@ app.post('/driverDelete',jsonencodedParser,(req,res)=>{
 });
 
 
-app.post('/insuranceEdit',jsonencodedParser,(req,res)=>{
+secureRoutes.post('/insuranceEdit',jsonencodedParser,(req,res)=>{
 
   insurance.editInsuranceDetails(req.body.nic,req.body.firstName,req.body.lastName,req.body.mobile,req.body.email)
   .then(function(doc){
@@ -146,7 +180,7 @@ app.post('/insuranceEdit',jsonencodedParser,(req,res)=>{
   })
 });
 
-app.post('/insuranceView',jsonencodedParser,(req,res)=>{
+secureRoutes.post('/insuranceView',jsonencodedParser,(req,res)=>{
 
   insurance.viewInsuranceDetails(req.body.nic)
   .then(function(doc){
@@ -157,7 +191,7 @@ app.post('/insuranceView',jsonencodedParser,(req,res)=>{
   })
 });
 
-app.post('/insuranceDelete',jsonencodedParser,(req,res)=>{
+secureRoutes.post('/insuranceDelete',jsonencodedParser,(req,res)=>{
 
   insurance.deleteInsuranceDetails(req.body.nic)
   .then(function(doc){
@@ -169,7 +203,7 @@ app.post('/insuranceDelete',jsonencodedParser,(req,res)=>{
 });
 
 
-app.post('/policeEdit',jsonencodedParser,(req,res)=>{
+secureRoutes.post('/policeEdit',jsonencodedParser,(req,res)=>{
 
   police.editPoliceDetails(req.body.nic,req.body.firstName,req.body.lastName,req.body.mobile,req.body.email)
   .then(function(doc){
@@ -180,7 +214,7 @@ app.post('/policeEdit',jsonencodedParser,(req,res)=>{
   })
 });
 
-app.post('/policeView',jsonencodedParser,(req,res)=>{
+secureRoutes.post('/policeView',jsonencodedParser,(req,res)=>{
 
   police.viewPoliceDetails(req.body.nic)
   .then(function(doc){
@@ -191,7 +225,7 @@ app.post('/policeView',jsonencodedParser,(req,res)=>{
   })
 });
 
-app.post('/policeDelete',jsonencodedParser,(req,res)=>{
+secureRoutes.post('/policeDelete',jsonencodedParser,(req,res)=>{
 
   police.deletePoliceDetails(req.body.nic)
   .then(function(doc){
@@ -248,9 +282,9 @@ app.post('/userAccountType',jsonencodedParser,(req,res)=>{
   })
 });
 
-app.post('/createFineTicket',jsonencodedParser,(req,res)=>{
+secureRoutes.post('/createFineTicket',jsonencodedParser,(req,res)=>{
 
-  fineTicket.enterFineDetails(req.body.nic,req.body.policeId,req.body.name,req.body.amount,req.body.vehicleNumber)
+  fineTicket.enterFineDetails(req.body.nic,req.body.policeId,req.body.fineName,req.body.amount,req.body.vehicleNumber)
   .then(function(doc){
     res.send(doc);
   })
@@ -259,5 +293,55 @@ app.post('/createFineTicket',jsonencodedParser,(req,res)=>{
   })
 });
 
+secureRoutes.get('/checkLicense',jsonencodedParser,(req,res)=>{
+  driver.findDriver(req.query.license)
+  .then(function(doc){
+    res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  })
+});
+
+secureRoutes.get('/getTicketDriver',jsonencodedParser,(req,res)=>{
+  fineTicket.findFineTicketDriver(req.query.nic)
+  .then(function(doc){
+    res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  });
+});
+
+secureRoutes.get('/getTicketPolice',jsonencodedParser,(req,res)=>{
+  fineTicket.findFineTicketPolice(req.query.policeId)
+  .then(function(doc){
+    res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  });
+});
+
+secureRoutes.get('/getDriver',jsonencodedParser,(req,res)=>{
+  driver.viewDriverDetails(req.query.nic)
+  .then(function(doc){
+    res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  })
+})
+
+app.post('/enterAccidentReport',jsonencodedParser,(req,res)=>{
+  accident.enterAccidentDetail(req.body.nic,req.body.agentId,req.body.vehicleNo,req.body.place,req.body.description)
+  .then(function(doc){
+    res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  })
+   
+})
 
 module.exports = app;
