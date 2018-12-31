@@ -55,7 +55,7 @@ function viewDriverDetails(dNic)
             }
             else
             {
-                resolve(doc);
+                resolve(doc[0]);
             }
         });
     });

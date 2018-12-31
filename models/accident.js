@@ -2,6 +2,7 @@ const mongoose=require('mongoose');
 const Schema =mongoose.Schema;
 
 mongoose.connect('mongodb://localhost:27017/driverbuddy',{ useNewUrlParser: true });
+//mongoose.connect('mongodb+srv://driver-1:driver_1@driverbuddy-of8hf.mongodb.net/driverbuddy?retryWrites=true',{ useNewUrlParser: true });
 
 mongoose.connection.once('open',function()
 {
@@ -14,12 +15,13 @@ mongoose.connection.once('open',function()
 var Driver=require('mongoose').model('Driver').schema
 var Insurance=require('mongoose').model('Insurance').schema
 
-var Accident=new mongoose.Schema(
+var accidentSchema=new mongoose.Schema(
     {
         vehicleNo:String,
         driver:[Driver],
-        Insurance:[Insurance],
+        insurance:[Insurance],
         place:String,
+        description:String,
         timeStamp:{ type : Date, default: Date.now }
     }
 
