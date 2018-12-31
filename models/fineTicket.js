@@ -25,7 +25,7 @@ var fineSchema= new Schema(
         driver:[Driver],
         police:[Police],
         timeStamp:{ type : Date, default: Date.now },
-        paid:{type:Boolean,default:false}
+        paid:{type:Number,default:1}
     }
 );
 

@@ -22,6 +22,7 @@ var accidentSchema=new mongoose.Schema(
         insurance:[Insurance],
         place:String,
         description:String,
+        insuranceNumber:String,
         timeStamp:{ type : Date, default: Date.now }
     }
 
