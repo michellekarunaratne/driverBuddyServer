@@ -2,7 +2,7 @@ const Accident=require('../../models/accident');
 const Insurance=require('../../models/insurance');
 const Driver=require('../../models/driver');
 
-function enterAccidentDetail(nic,agentID,vehicleNo,place,description)
+function enterAccidentDetail(nic,agentID,vehicleNo,place,description,insuranceNumber)
 {
    const $Vals={};
    
@@ -44,14 +44,15 @@ function enterAccidentDetail(nic,agentID,vehicleNo,place,description)
        })
    }
 
-   function createReport(vehicleNo,place,description)
+   function createReport(vehicleNo,place,description,insuranceNumber)
    {
     
     return new Promise(function(resolve,reject){
         const newReport=new Accident({
             vehicleNo:vehicleNo,
-            palce:place, 
+            place:place, 
             description:description,
+            insuranceNumber:insuranceNumber,
             driver:$Vals.driver,
             insurance:$Vals.insurance,
         })
@@ -77,7 +78,7 @@ function enterAccidentDetail(nic,agentID,vehicleNo,place,description)
    })
    .then(function(doc){
        $Vals.insurance=doc;
-       return createReport(vehicleNo,place,description)
+       return createReport(vehicleNo,place,description,insuranceNumber)
    })
 
 
@@ -85,4 +86,28 @@ function enterAccidentDetail(nic,agentID,vehicleNo,place,description)
 
 }
 
+function viewAccidentReport(nic,agentId)
+{
+    
+    
+    var promise=new Promise(function(resolve,reject){
+
+        Accident.find({$and:[{"driver.nic":nic},{"insurance.agentId":agentId}],},function(error,doc){
+            if(error)
+            {
+                reject(error);
+            }
+            else
+            {
+                resolve(doc[0])
+            }
+        }).sort({timeStamp:-1}); 
+
+    });
+
+    return promise;
+}
+
+
 module.exports.enterAccidentDetail=enterAccidentDetail;
+module.exports.viewAccidentReport=viewAccidentReport;

@@ -333,8 +333,8 @@ secureRoutes.get('/getDriver',jsonencodedParser,(req,res)=>{
   })
 })
 
-app.post('/enterAccidentReport',jsonencodedParser,(req,res)=>{
-  accident.enterAccidentDetail(req.body.nic,req.body.agentId,req.body.vehicleNo,req.body.place,req.body.description)
+secureRoutes.post('/enterAccidentReport',jsonencodedParser,(req,res)=>{
+  accident.enterAccidentDetail(req.body.nic,req.body.agentId,req.body.vehicleNo,req.body.place,req.body.description,req.body.insuranceNumber)
   .then(function(doc){
     res.send(doc);
   })
@@ -343,5 +343,16 @@ app.post('/enterAccidentReport',jsonencodedParser,(req,res)=>{
   })
    
 })
+
+app.get('/viewAccidentReport',jsonencodedParser,(req,res)=>{
+  accident.viewAccidentReport(req.query.nic,req.query.agentId)
+  .then(function(doc){
+    res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  })
+})
+
 
 module.exports = app;
