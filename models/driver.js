@@ -15,7 +15,7 @@ mongoose.connection.once('open',function()
 
 var driverSchema= new Schema(
     {
-        nic:String,
+        nic:{type:String,required: true,unique:true},
         firstName:String,
         lastName:String,
         mobile: Number,
