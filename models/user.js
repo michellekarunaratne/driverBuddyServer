@@ -14,7 +14,7 @@ mongoose.connection.once('open',function()
 
 var userSchema= new Schema(
     {
-        userId:String,
+        userId:{type:String,required: true,unique:true},
         type:String,
         hashedPassword:String
     }
