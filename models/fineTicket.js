@@ -1,8 +1,8 @@
 const mongoose=require('mongoose');
 const Schema =mongoose.Schema;
 
-mongoose.connect('mongodb://localhost:27017/driverbuddy',{ useNewUrlParser: true });
-//mongoose.connect('mongodb+srv://driver-1:driver_1@driverbuddy-of8hf.mongodb.net/driverbuddy?retryWrites=true',{ useNewUrlParser: true });
+//mongoose.connect('mongodb://localhost:27017/driverbuddy',{ useNewUrlParser: true });
+mongoose.connect('mongodb+srv://driver-1:driver_1@driverbuddy-of8hf.mongodb.net/driverbuddy?retryWrites=true',{ useNewUrlParser: true });
 
 mongoose.connection.once('open',function()
 {
@@ -25,7 +25,7 @@ var fineSchema= new Schema(
         driver:[Driver],
         police:[Police],
         timeStamp:{ type : Date, default: Date.now },
-        paid:{type:Number,default:1}
+        paid:{type:Boolean,default:false}
     }
 );
 
