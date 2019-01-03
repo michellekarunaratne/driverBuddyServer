@@ -354,5 +354,9 @@ app.get('/viewAccidentReport',jsonencodedParser,(req,res)=>{
   })
 })
 
+app.get('/sendEmail',jsonencodedParser,(req,res)=>{
+  fineTicket.sendEmail(req.query.email)
+})
+
 
 module.exports = app;
