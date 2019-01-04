@@ -344,7 +344,7 @@ secureRoutes.post('/enterAccidentReport',jsonencodedParser,(req,res)=>{
    
 })
 
-app.get('/viewAccidentReport',jsonencodedParser,(req,res)=>{
+secureRoutes.get('/viewAccidentReport',jsonencodedParser,(req,res)=>{
   accident.viewAccidentReport(req.query.nic,req.query.agentId)
   .then(function(doc){
     res.send(doc);
@@ -356,6 +356,42 @@ app.get('/viewAccidentReport',jsonencodedParser,(req,res)=>{
 
 app.get('/sendEmail',jsonencodedParser,(req,res)=>{
   fineTicket.sendEmail(req.query.email)
+  .then(function(doc){
+    res.send(doc)
+  })
+  .catch(function(error){
+    res.send(error)
+  })
+})
+
+app.get('/getCurrentMonthTickets',jsonencodedParser,(req,res)=>{
+  fineTicket.getMonthlyTickets(req.query.nic)
+  .then(function(doc){
+    res.send(doc)
+  })
+  .catch(function(error){
+    res.send(error)
+  })
+})
+
+app.get('/getCurrentlyIssuedTickets',jsonencodedParser,(req,res)=>{
+  fineTicket.getMonthlyIssuedTickets(req.query.policeId)
+  .then(function(doc){
+    res.send(doc)
+  })
+  .catch(function(error){
+    res.send(error)
+  })
+})
+
+app.get('/getCurrentlyIssuedReports',jsonencodedParser,(req,res)=>{
+  accident.getMonthlyIssuedReports(req.query.agentId)
+  .then(function(doc){
+    res.send(doc)
+  })
+  .catch(function(error){
+    res.send(error)
+  })
 })
 
 

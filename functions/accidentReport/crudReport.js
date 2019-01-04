@@ -109,5 +109,26 @@ function viewAccidentReport(nic,agentId)
 }
 
 
+function getMonthlyIssuedReports(agentId)
+{
+    var date=new Date()
+    var currentMonth=date.getMonth()
+    var currentYear=date.getFullYear()
+    var promise=new Promise(function(resolve,reject){
+        Accident.find({"insurance.agentId":agentId,month:currentMonth,year:currentYear},function(error,doc){
+            if(error)
+            {
+                reject(error)
+            }
+            else
+            {
+                resolve(doc)
+            }
+        })
+    })
+    return promise 
+}
+
 module.exports.enterAccidentDetail=enterAccidentDetail;
 module.exports.viewAccidentReport=viewAccidentReport;
+module.exports.getMonthlyIssuedReports=getMonthlyIssuedReports;
