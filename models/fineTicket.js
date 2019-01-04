@@ -17,6 +17,10 @@ var Driver=require('mongoose').model('Driver').schema
 var Police = require('mongoose').model('Police').schema
 var SpotFine=require('mongoose').model('SpotFine').schema
 
+var date=new Date()
+var currentMonth=date.getMonth()
+var currentYear=date.getFullYear()
+
 var fineSchema= new Schema(
     {
         vehicleNumber: String,
@@ -24,7 +28,9 @@ var fineSchema= new Schema(
         fine:[SpotFine],
         driver:[Driver],
         police:[Police],
-        timeStamp:{ type : Date, default: Date.now },
+        timeStamp:{ type : Date, default:new Date()},
+        month:{type:Number,default:currentMonth},
+        year:{type:Number,default:currentYear},
         paid:{type:Boolean,default:false}
     }
 );

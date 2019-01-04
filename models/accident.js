@@ -15,6 +15,10 @@ mongoose.connection.once('open',function()
 var Driver=require('mongoose').model('Driver').schema
 var Insurance=require('mongoose').model('Insurance').schema
 
+var date=new Date()
+var currentMonth=date.getMonth();
+var currentYear=date.getFullYear();
+
 var accidentSchema=new mongoose.Schema(
     {
         vehicleNo:String,
@@ -23,6 +27,8 @@ var accidentSchema=new mongoose.Schema(
         place:String,
         description:String,
         insuranceNumber:String,
+        month:{type:Number,default:currentMonth},
+        year:{type:Number,default:currentYear},
         timeStamp:{ type : Date, default: Date.now }
     }
 
