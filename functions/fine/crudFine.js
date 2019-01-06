@@ -150,7 +150,7 @@ function findFineTicketPolice(policeId)
     return promise;
 }
 
-function sendEmail(email)
+/*function sendEmail(email)
 {
     var promise=new Promise(function(resolve,reject){
 
@@ -194,7 +194,7 @@ function sendEmail(email)
             });
         })
         return promise;
-}
+}*/
 
 function getMonthlyTickets(nic)
 {
@@ -237,13 +237,84 @@ function getMonthlyIssuedTickets(policeId)
     return promise 
 }
 
+function SendEmailToDriver(email,dname,offence,amount)
+{
+    var promise=new Promise(function(resolve,reject){
+
+        nodemailer.createTestAccount((err, account) => {
+            // create reusable transporter object using the default SMTP transport
+            let transporter = nodemailer.createTransport({
+                host: 'smtp.gmail.com',
+                port: 465,
+                secure: true, // true for 465, false for other ports
+                auth: {
+                    user:"dbuddyucsc@gmail.com",
+                    pass:"DBucsc@123"
+                },
+                tls:{
+                    rejectUnauthorized: false
+                }
+            });
+
+            // setup email data with unicode symbols
+            let mailOptions = {
+                from: '"Driver Buddy" <driverbuddyemail@gmail.com>', // sender address
+                to: email, // list of receivers
+                subject: 'Payement Reciept', // Subject line
+                text: 'Your fine has been successfully paid,Thank you for using driver buddy', // plain text body
+                html: `<b>SUCCESSFUL</b><p>Your fine of ${amount} paid for ${offence} has been successful,Thank you ${dname} for using driver buddy</p>` // html body
+            };
+
+            // send mail with defined transport object
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    //return console.log(error);
+                    reject(error);
+                }
+                else
+                {
+                    resolve(info)
+                }
+                //console.log('Message sent: %s', info.messageId);
+                //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+                // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+                // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+            });
+        });
+    })
+    return promise;
+    }
+
+    function updateTicketToPaid(id)
+{
+    var promise = new Promise(function(resolve,reject){
+        FineTicket.findOneAndUpdate({_id:id},{paid:true},{new:true},function(error,doc){
+            if(error)
+            {
+                reject(error);
+            }
+            else
+            {
+                resolve(doc);
+            }
+        });
+
+    });
+
+    return promise;
+
+}
+
 
 
 
 module.exports.enterFineDetails=enterFineDetails;
 module.exports.findFineTicketDriver=findFineTicketDriver;
 module.exports.findFineTicketPolice=findFineTicketPolice;
-module.exports.sendEmail=sendEmail;
+//module.exports.sendEmail=sendEmail;
 module.exports.getMonthlyTickets=getMonthlyTickets;
 module.exports.getMonthlyIssuedTickets=getMonthlyIssuedTickets
+module.exports.updateTicketToPaid=updateTicketToPaid;
+module.exports.SendEmailToDriver=SendEmailToDriver;
 

@@ -354,7 +354,7 @@ secureRoutes.get('/viewAccidentReport',jsonencodedParser,(req,res)=>{
   })
 })
 
-app.get('/sendEmail',jsonencodedParser,(req,res)=>{
+/*app.get('/sendEmail',jsonencodedParser,(req,res)=>{
   fineTicket.sendEmail(req.query.email)
   .then(function(doc){
     res.send(doc)
@@ -362,7 +362,7 @@ app.get('/sendEmail',jsonencodedParser,(req,res)=>{
   .catch(function(error){
     res.send(error)
   })
-})
+})*/
 
 app.get('/getCurrentMonthTickets',jsonencodedParser,(req,res)=>{
   fineTicket.getMonthlyTickets(req.query.nic)
@@ -391,6 +391,26 @@ app.get('/getCurrentlyIssuedReports',jsonencodedParser,(req,res)=>{
   })
   .catch(function(error){
     res.send(error)
+  })
+})
+
+app.get('/updatePaidStatus',jsonencodedParser,(req,res)=>{
+  fineTicket.updateTicketToPaid(req.query.id)
+  .then(function(doc){
+    res.send(doc);
+  })
+  .catch(function(error){
+    res.send(error);
+  })
+})
+
+app.get('/sendEmailToDriverPaymentStatus',jsonencodedParser,(req,res)=>{
+  fineTicket.SendEmailToDriver(req.query.email,req.query.dname,req.query.offence,req.query.amount)
+  .then(function(doc){
+      res.send(doc)
+  })
+  .catch(function(error){
+      res.send(error)
   })
 })
 
