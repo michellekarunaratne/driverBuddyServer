@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "devstart": "nodemon ./bin/www",
-    "start": "node app.js",
-    "postinstall": "grunt build"
+    "start": "node app.js"
   },
   "dependencies": {
     "bcrypt": "^3.0.0",
