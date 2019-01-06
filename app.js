@@ -344,7 +344,7 @@ secureRoutes.post('/enterAccidentReport',jsonencodedParser,(req,res)=>{
    
 })
 
-secureRoutes.get('/viewAccidentReport',jsonencodedParser,(req,res)=>{
+app.get('/viewAccidentReport',jsonencodedParser,(req,res)=>{
   accident.viewAccidentReport(req.query.nic,req.query.agentId)
   .then(function(doc){
     res.send(doc);
