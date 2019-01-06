@@ -110,7 +110,7 @@ function getRecentTicketAndUpdate(policeId,nic,amount,vehicleNumber,fineName)
 {
     var ObjectID = require('mongodb').ObjectID
 
-    FineTicket.findOneAndUpdate({policeId:policeId,_id:{$gt:ObjectID.createFromTime(Date.now()/1000-15*60)}}, )   
+    FineTicket.findOneAndUpdate({policeId:policeId,_id:{$gt:ObjectID.createFromTime(Date.now()/1000-15*60)}},)   
 }
 
 function findFineTicketDriver(nic)

@@ -7,7 +7,8 @@ mongoose.connect('mongodb+srv://driver-1:driver_1@driverbuddy-of8hf.mongodb.net/
 mongoose.connection.once('open',function()
 {
     console.log('Connection has been made');
-}).on('error',function(error)
+})
+.on('error',function(error)
 {
     console.log('Connection error:',error);
 });
