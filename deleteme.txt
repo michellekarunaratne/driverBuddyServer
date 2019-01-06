@@ -1,0 +1,10 @@
+ Volume in drive C is OS
+ Volume Serial Number is 6E95-3F3F
+
+ Directory of C:\Users\Michelle\Desktop\finalServer
+
+01/06/2019  07:44 AM    <DIR>          .
+01/06/2019  07:44 AM    <DIR>          ..
+01/06/2019  07:44 AM                 0 deleteme.txt
+               1 File(s)              0 bytes
+               2 Dir(s)  273,226,747,904 bytes free
