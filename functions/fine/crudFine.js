@@ -306,6 +306,27 @@ function SendEmailToDriver(email,dname,offence,amount)
 
 }
 
+function viewRecentFineTicket(nic,paid=false)
+{
+
+    var promise=new Promise(function(resolve,reject){
+
+        FineTicket.find({$and:[{"driver.nic":nic},{paid}]},function(error,doc){
+            if(error)
+            {
+                reject(error);
+            }
+            else
+            {
+                resolve(doc[0])
+            }
+        }).sort({timeStamp:-1});
+
+    });
+
+    return promise;
+}
+
 
 
 
@@ -317,4 +338,6 @@ module.exports.getMonthlyTickets=getMonthlyTickets;
 module.exports.getMonthlyIssuedTickets=getMonthlyIssuedTickets
 module.exports.updateTicketToPaid=updateTicketToPaid;
 module.exports.SendEmailToDriver=SendEmailToDriver;
+module.exports.viewRecentFineTicket=viewRecentFineTicket;
+
 
