@@ -253,6 +253,10 @@ function SendEmailToDriver(email,dname,offence,amount)
                 },
                 tls:{
                     rejectUnauthorized: false
+                },
+                ssl:
+                {
+                    rejectUnauthorized: false
                 }
             });
 
